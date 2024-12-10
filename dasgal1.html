@@ -1,13 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8" />
+  <title>FileReader()</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+
+    input[type="file"] {
+      margin: 10px 0;
+      cursor: pointer;
+    }
+
+  </style>
 </head>
 <body>
-    <div>
-        
-    </div>
+  <h1>FileReader()</h1>
+  <input type="file" id="image_file" accept="image/*" />
+  <div id="image_preview"></div>
+
+  <script>
+    const imageFileInput = document.getElementById('image_file');
+    const imagePreview = document.getElementById('image_preview');
+
+    imageFileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (!file) {
+        alert("Please select an image file.");
+        return;
+      }
+
+      // Ensure the file is an image
+      if (!file.type.startsWith('image/')) {
+        alert("Selected file is not an image. Please choose a valid image file.");
+        imageFileInput.value = ''; // Clear the input
+        return;
+      }
+
+      // Read the image file
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imageUrl = e.target.result; // Get the image data URL
+
+        // Display the image with full width
+        imagePreview.innerHTML = `
+          <img src="${imageUrl}" alt="Uploaded Image" />
+        `;
+      };
+
+      // Read the file as a data URL
+      reader.readAsDataURL(file);
+    });
+  </script>
 </body>
 </html>
